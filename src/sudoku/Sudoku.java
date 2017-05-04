@@ -25,7 +25,7 @@ public class Sudoku {
     public void run() {
         init();
         long startTime = System.currentTimeMillis();
-        boolean succ = calc(0, 0);
+        boolean succ = calc(0, -1);
         //boolean succ = calcByd(0);
         long endTime = System.currentTimeMillis();
         System.out.println("Total time: " + (float) (startTime - endTime) / 1000 + "s");
@@ -49,6 +49,7 @@ public class Sudoku {
                         }
                     }
                     if (a == -1) {
+                        unit[i][j] = 0;
                         return false;
                     }
                 }
@@ -101,17 +102,17 @@ public class Sudoku {
                 {0, 3, 8, 1, 4, 2, 9, 7, 0}};
     */
     
-//    int rawUnit[][] = new int[][]{
-//    {0,0,4,9,1,6,2,3,5},
-//    {6,3,5,2,4,8,9,7,1},
-//    {0,0,0,7,3,5,4,8,6},
-//    {0,0,3,8,0,2,0,4,7},
-//    {4,0,8,0,0,0,0,5,2},
-//    {0,0,2,1,0,4,8,9,3},
-//    {1,4,0,5,0,0,0,0,8},
-//    {0,0,6,4,2,0,0,1,9},
-//    {0,0,0,0,8,1,0,0,4}
     int rawUnit[][] = new int[][]{
+    {0,0,4,9,1,6,2,3,5},
+    {6,3,5,2,4,8,9,7,1},
+    {0,0,0,7,3,5,4,8,6},
+    {0,0,3,8,0,2,0,4,7},
+    {4,0,8,0,0,0,0,5,2},
+    {0,0,2,1,0,4,0,0,0},
+    {1,4,0,5,0,0,0,0,8},
+    {0,0,6,4,2,0,0,1,9},
+    {0,0,0,0,8,1,0,0,4}};
+    /*int rawUnit[][] = new int[][]{
     {0,0,4,9,1,6,2,3,5},
     {6,3,5,2,4,8,9,7,1},
     {0,0,1,7,3,5,4,8,6},
@@ -121,7 +122,7 @@ public class Sudoku {
     {1,4,0,5,6,0,0,2,8},
     {0,0,6,4,2,0,0,1,9},
     {0,0,0,3,8,1,0,6,4}
-};
+};*/
     
 
     //进行完善(填数字)的数独数据
@@ -243,7 +244,7 @@ public class Sudoku {
     public int getValueFromOneRow(int indexX, int indexY, int startValue) {
         int a = startValue;
         //validate the value
-        if (!(0 <= a && a <= 9)) {
+        if (!(0 <= a && a < 9)) {
             return -1;
         }
 
@@ -264,7 +265,7 @@ public class Sudoku {
             if (num == 8) {
                 hasEqualValue = false;
             }
-        } while (a <= 9 && hasEqualValue);
+        } while (a < 9 && hasEqualValue);
 
         if (!hasEqualValue) {
             return a;
@@ -295,7 +296,7 @@ public class Sudoku {
     public int getValueFromOneColumn(int indexX, int indexY, int startValue) {
         int a = startValue;
         //validate the value
-        if (!(0 <= a && a <= 9)) {
+        if (!(0 <= a && a < 9)) {
             return -1;
         }
 
@@ -316,7 +317,7 @@ public class Sudoku {
             if (num == 8) {
                 hasEqualValue = false;
             }
-        } while (a <= 9 && hasEqualValue);
+        } while (a < 9 && hasEqualValue);
         if (!hasEqualValue) {
             return a;
         } else {
@@ -346,7 +347,7 @@ public class Sudoku {
     public int getValueFromOneBox(int indexX, int indexY, int startValue) {
         int a = startValue;
         //validate the value
-        if (!(0 <= a && a <= 9)) {
+        if (!(0 <= a && a < 9)) {
             return -1;
         }
 
@@ -375,7 +376,7 @@ public class Sudoku {
             if (num == 8) {
                 hasEqualValue = false;
             }
-        } while (a <= 9 && hasEqualValue);
+        } while (a < 9 && hasEqualValue);
         if (!hasEqualValue) {
             return a;
         } else {
@@ -403,6 +404,10 @@ public class Sudoku {
         int columnValue = getValueFromOneColumn(indexX, indexY);
         int boxValue = getValueFromOneBox(indexX, indexY);
 
+        if (rowValue == -1 || columnValue == -1 || boxValue == -1) {
+            return -1;
+        }
+        
         //bubble 
         //a>=b; b>=c; c>=a; => a==b==c
         while (!isValidatedValue(rowValue, columnValue, boxValue)) {
