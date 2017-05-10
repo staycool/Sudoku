@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sudoku;
+package com.hopa.kid.sudoku;
 
 /**
  *
  * @author KID
  */
-public class Density implements Comparable<Density> {
+class Density implements Comparable<Density> {
 
     private int mIndexX;
     private int mIndexY;
@@ -63,6 +63,7 @@ public class Density implements Comparable<Density> {
         this.mdesity = mdesity;
     }
 
+    //降序排列dsc
     @Override
     public int compareTo(Density o) {
         return o.getMdesity() - this.getMdesity();
@@ -72,5 +73,4 @@ public class Density implements Comparable<Density> {
     public String toString() {
         return "desity-" + this.mdesity + " x-" + this.mIndexX + " y-" + this.mIndexY;
     }
-
 }
